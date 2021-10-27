@@ -5,6 +5,18 @@ function findCoord(event) {
     event.preventDefault();
 
     var city = cityInputEl.value.trim();
+    // google geocoding api
+    var coordApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyAfl9qXiBEqLsi1wvqPGoTN9N7f4YtBp38";
+
+    fetch(coordApiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                console.log(data);
+            });
+        } else {
+            alert('Error');
+        }
+    });
 
     console.log(city);
 };
