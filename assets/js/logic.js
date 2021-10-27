@@ -11,7 +11,10 @@ function findCoord(event) {
     fetch(coordApiUrl).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
-                console.log(data);
+                var lat = data.results[0].geometry.location.lat;
+                var lng = data.results[0].geometry.location.lng;
+
+                fetchTest(lat, lng);
             });
         } else {
             alert('Error');
@@ -21,16 +24,28 @@ function findCoord(event) {
     console.log(city);
 };
 
-function fetchTest(event) {
-    event.preventDefault();
+function fetchTest(lat, lon) {
+    
 
     
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}"
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=eb74d780646659d73e979d1c2e45c146";
+
+    console.log(apiUrl);
+
+    fetch(apiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                console.log(data);
+            });
+        } else {
+            alert('fetch error');
+        }
+    });
 
 
 
 
-    console.log(event);
+   
 };
 
 cityFormEl.addEventListener("submit", findCoord);
