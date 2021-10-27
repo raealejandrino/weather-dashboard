@@ -1,5 +1,6 @@
 var cityFormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#city");
+var currentWeatherElement = document.querySelector(".current");
 
 function findCoord(event) {
     event.preventDefault();
@@ -13,24 +14,24 @@ function findCoord(event) {
             response.json().then(function(data) {
                 var lat = data.results[0].geometry.location.lat;
                 var lng = data.results[0].geometry.location.lng;
-
-                fetchTest(lat, lng);
+                console.log(data.results[0]);
+                fetchTest(lat, lng, city);
             });
         } else {
             alert('Error');
         }
     });
 
-    console.log(city);
+    
 };
 
-function fetchTest(lat, lon) {
+function fetchTest(lat, lon, city) {
     
 
     
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=eb74d780646659d73e979d1c2e45c146";
 
-    console.log(apiUrl);
+    
 
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
@@ -41,6 +42,23 @@ function fetchTest(lat, lon) {
             alert('fetch error');
         }
     });
+
+    // Moment
+
+    var currentDate = moment().format("M/D/YY");
+
+    console.log(currentDate);
+
+    // Display
+    
+    var currentCityDate = document.createElement("h3");
+    currentCityDate.innerHTML = city + currentDate;
+
+    currentWeatherElement.appendChild(currentCityDate);
+
+    
+
+
 
 
 
