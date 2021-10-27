@@ -52,7 +52,7 @@ function fetchWeather(lat, lon, city) {
 
 function displayWeather(data, city) {
     
-
+    currentWeatherElement.textContent = "";
 
     // Moment
     
@@ -75,7 +75,47 @@ function displayWeather(data, city) {
     tempEl.textContent = "Temp: " + temp + "°F";
     currentWeatherElement.appendChild(tempEl);
 
-    console.log(temp);
+    // Display Wind Speed
+    var windSpeed = data.current.wind_speed;
+    var windEl = document.createElement("h3");
+    windEl.textContent = "Wind: " + windSpeed + " MPH";
+    currentWeatherElement.appendChild(windEl);
+
+    // Display Humidity
+    var humid = data.current.humidity;
+    var humidEl = document.createElement("h3");
+    humidEl.textContent = "Humidity: " + humid + "%";
+    currentWeatherElement.appendChild(humidEl);
+
+    // Display UV Index
+    var uvi = data.current.uvi;
+    var uviEl = document.createElement("h3");
+    uviEl.textContent = "UV Index: ";
+
+    var uviSpan = document.createElement("span");
+        // uvi logic
+
+        if (uvi <= 2) {
+            uviSpan.className = "uviLow";
+        } else if (uvi <= 5) {
+            uviSpan.className = "uviMod";
+        } else if (uvi <= 8) {
+            uviSpan.className = "uviHigh";
+        } else if (uvi <= 10) {
+            uviSpan.className = "uviReallyHigh";
+        } else {
+            uviSpan.className = "uviSevere";
+        }
+
+    uviSpan.setAttribute("id", "uvispan");
+    uviEl.classList = "d-flex align-items-center";
+
+    uviSpan.textContent = uvi;
+    uviEl.appendChild(uviSpan);
+
+    currentWeatherElement.appendChild(uviEl);
+
+    console.log(data);
 
 };
 
