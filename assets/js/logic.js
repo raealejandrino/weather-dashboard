@@ -14,8 +14,8 @@ function findCoord(event) {
             response.json().then(function(data) {
                 var lat = data.results[0].geometry.location.lat;
                 var lng = data.results[0].geometry.location.lng;
-                console.log(data.results[0]);
-                fetchTest(lat, lng, city);
+                city = data.results[0].address_components[0].short_name;
+                fetchWeather(lat, lng, city);
             });
         } else {
             alert('Error');
@@ -25,45 +25,58 @@ function findCoord(event) {
     
 };
 
-function fetchTest(lat, lon, city) {
+function fetchWeather(lat, lon, city) {
     
 
     
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=eb74d780646659d73e979d1c2e45c146";
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial" + "&appid=eb74d780646659d73e979d1c2e45c146";
 
     
 
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
-                console.log(data);
+                displayWeather(data, city);
+
             });
         } else {
             alert('fetch error');
         }
     });
 
+    
+    
+    
+};
+
+
+function displayWeather(data, city) {
+    
+
+
     // Moment
-
+    
     var currentDate = moment().format("M/D/YY");
-
+    
     console.log(currentDate);
 
-    // Display
-    
-    var currentCityDate = document.createElement("h3");
-    currentCityDate.innerHTML = city + currentDate;
 
+    // Display city input and current date
+    
+    var currentCityDate = document.createElement("h1");
+    currentCityDate.innerHTML = city + "  (" + currentDate + ")";
     currentWeatherElement.appendChild(currentCityDate);
 
-    
 
+    // Display Temperature
 
+    var temp = data.current.temp;
+    var tempEl = document.createElement("h3");
+    tempEl.textContent = "Temp: " + temp + "°F";
+    currentWeatherElement.appendChild(tempEl);
 
+    console.log(temp);
 
-
-
-   
 };
 
 cityFormEl.addEventListener("submit", findCoord);
