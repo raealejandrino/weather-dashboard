@@ -7,11 +7,8 @@ var searchHistoryBtn = document.querySelector(".searchHistory");
 var arrStor = [];
 
 function findCoord(argument) {
-    if (typeOf (argument) !== 'string') {
-    argument.preventDefault();
-    }
-
-    if (typeOf (argument) === 'string') {
+   
+    if (argument) {
         var city = argument;
     } else {
     var city = cityInputEl.value.trim();
@@ -76,7 +73,6 @@ function loadSearch() {
 
     retrievedSearches = JSON.parse(retrievedSearches);
 
-    console.log(retrievedSearches);
 
     for (var i=0; i<retrievedSearches.length; i++) {
         arrStor.push(retrievedSearches[i]);
@@ -119,7 +115,6 @@ function displayWeather(data, city) {
     
     var currentDate = moment().format("M/D/YY");
     
-    console.log(currentDate);
 
 
     // Display city input and current date
@@ -180,7 +175,6 @@ function displayWeather(data, city) {
     // run five day forecast display function
     secondaryDisplay(data, city);
 
-    console.log(data);
 
 };
 
@@ -222,7 +216,6 @@ function secondaryDisplay(data, city) {
         
 
         if (weatherId > 800) {
-            console.log("clouds");
             weatherIconEl.innerHTML ='<i class="fas fa-cloud-sun"></i>';
 
         } else if (weatherId === 800) {
@@ -276,7 +269,6 @@ function secondaryDisplay(data, city) {
 
 function test(event) {
     
-    console.log(event.target.dataset.city);
     var oldCity = event.target.dataset.city;
 
     findCoord(oldCity);
@@ -284,5 +276,9 @@ function test(event) {
 
 
 loadSearch();
-cityFormEl.addEventListener("submit", findCoord);
+cityFormEl.addEventListener("submit", 
+    function(event){
+        event.preventDefault();
+        findCoord('');
+});
 searchHistoryBtn.addEventListener("click", test);
