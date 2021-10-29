@@ -1,6 +1,7 @@
 var cityFormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#city");
 var currentWeatherElement = document.querySelector(".current");
+var fiveDayContainerEl = document.querySelector(".fiveDay");
 
 function findCoord(event) {
     event.preventDefault();
@@ -57,8 +58,8 @@ function displayWeather(data, city) {
     // Moment
     
     var currentDate = moment().format("M/D/YY");
-    
-    console.log(currentDate);
+    var nextDate = moment().add(1, "d").format("M/D/YY");
+    console.log(currentDate, nextDate);
 
 
     // Display city input and current date
@@ -115,8 +116,26 @@ function displayWeather(data, city) {
 
     currentWeatherElement.appendChild(uviEl);
 
+
+    // run five day forecast display function
+    secondaryDisplay(data, city);
+
     console.log(data);
 
 };
+
+
+function secondaryDisplay(data, city) {
+    // clear 
+    fiveDayContainerEl.textContent = "";
+
+    // Display header
+
+    var fiveDayHeader = document.createElement("h3");
+    fiveDayHeader.textContent = "5-Day Forecast:";
+    fiveDayContainerEl.appendChild(fiveDayHeader);
+
+}
+
 
 cityFormEl.addEventListener("submit", findCoord);
