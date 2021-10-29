@@ -30,16 +30,20 @@ function findCoord(event) {
 
 function saveSearch(city) {
     localStorage.setItem("cities", JSON.stringify(city));
+   
+
+    // check for existing search history
     
-    if (searchHistoryContainerEl.children.length > 0) {
-        
-        var oldBtn = document.querySelector("#historyBtn");
-        var test = oldBtn.getAttribute("data-city") ;
-        console.log(test);
-        if (test=== city) {
-            searchHistoryContainerEl.removeChild(oldBtn);
+    for (var i=0; i < searchHistoryContainerEl.children.length; i++) {
+        if (searchHistoryContainerEl.children[i].dataset.city === city) {
+            
+           
+                searchHistoryContainerEl.removeChild(searchHistoryContainerEl.children[i]);
+          
         }
     }
+
+    // create search history button
     var searchHistoryButtonEl = document.createElement("button");
     searchHistoryButtonEl.className = "btn";
     searchHistoryButtonEl.setAttribute("type", "submit");
