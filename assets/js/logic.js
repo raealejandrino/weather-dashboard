@@ -145,19 +145,45 @@ function secondaryDisplay(data, city) {
 
     for (var i=0; i < 5; i++) {
         var forecastContainerEl = document.createElement("div");
-        forecastContainerEl.classList = "col-sm-8 col-md-4 col-xl-2";
+        forecastContainerEl.classList = "col-8 col-sm-8 col-md-4 col-xl-2 bg-info p-1 m-2";
 
         var forecastHeaderEl = document.createElement("h4");
         forecastHeaderEl.textContent = nextDate;
 
         forecastContainerEl.appendChild(forecastHeaderEl);
-        fiveDayContainerEl.appendChild(forecastContainerEl);
-
-        nextDate = (moment(nextDate).add(1, "d").format("M/D/YY"));
-
         
-
-
+        nextDate = (moment(nextDate).add(1, "d").format("M/D/YY"));
+        
+        
+        // span image
+        
+        
+        // temp
+        var temp = data.daily[i].temp.day;
+        console.log(temp);
+        var tempEl = document.createElement("h5");
+        tempEl.textContent = "Temp: " + temp + "°F";
+        forecastContainerEl.appendChild(tempEl);
+        
+        
+        
+        // wind
+        var windSpeed = data.daily[i].wind_speed;
+        var windEl = document.createElement("h5");
+        windEl.textContent = "Wind: " + windSpeed + " MPH";
+        forecastContainerEl.appendChild(windEl);
+        
+        
+        // humidity
+        var humid = data.daily[i].humidity;
+        var humidEl = document.createElement("h5");
+        humidEl.textContent = "Humidity: " + humid + "%";
+        forecastContainerEl.appendChild(humidEl);
+        
+        
+        // append container to parent
+        
+        fiveDayContainerEl.appendChild(forecastContainerEl);
     }
 
 };
