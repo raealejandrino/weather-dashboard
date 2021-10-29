@@ -2,6 +2,7 @@ var cityFormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#city");
 var currentWeatherElement = document.querySelector(".current");
 var fiveDayContainerEl = document.querySelector(".fiveDay");
+var searchHistoryContainerEl = document.querySelector(".searchHistory");
 
 function findCoord(event) {
     event.preventDefault();
@@ -23,7 +24,34 @@ function findCoord(event) {
         }
     });
 
+    saveSearch(city);
     
+};
+
+function saveSearch(city) {
+    localStorage.setItem("cities", JSON.stringify(city));
+    
+    if (searchHistoryContainerEl.children.length > 0) {
+        
+        var oldBtn = document.querySelector("#historyBtn");
+        var test = oldBtn.getAttribute("data-city") ;
+        console.log(test);
+        if (test=== city) {
+            searchHistoryContainerEl.removeChild(oldBtn);
+        }
+    }
+    var searchHistoryButtonEl = document.createElement("button");
+    searchHistoryButtonEl.className = "btn";
+    searchHistoryButtonEl.setAttribute("type", "submit");
+    searchHistoryButtonEl.setAttribute("data-city", city);
+    searchHistoryButtonEl.setAttribute("id", "historyBtn");
+    searchHistoryButtonEl.innerText = city;
+
+    searchHistoryContainerEl.appendChild(searchHistoryButtonEl);
+};
+
+function loadSearch() {
+
 };
 
 function fetchWeather(lat, lon, city) {
