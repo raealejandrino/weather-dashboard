@@ -156,11 +156,37 @@ function secondaryDisplay(data, city) {
         
         
         // span image
+
+        var weatherId = data.daily[i].weather[0].id;
+        var weatherIconEl = document.createElement("span");
+        
+
+        if (weatherId > 800) {
+            console.log("clouds");
+            weatherIconEl.innerHTML ='<i class="fas fa-cloud-sun"></i>';
+
+        } else if (weatherId === 800) {
+            weatherIconEl.innerHTML ='<i class="fas fa-sun"></i>';
+        } else if (weatherId > 700) {
+            weatherIconEl.innerHTML ='<i class="fas fa-smog"></i>';
+        } else if (weatherId >= 600) {
+            weatherIconEl.innerHTML ='<i class="fas fa-snowflake"></i>';
+        } else if (weatherId >= 500) {
+            weatherIconEl.innerHTML ='<i class="fas fa-cloud-showers-heavy"></i>';
+        } else if (weatherId >= 300) {
+            weatherIconEl.innerHTML ='<i class="fas fa-cloud-rain"></i>';
+        } else {
+            weatherIconEl.innerHTML ='<i class="fas fa-poo-storm"></i>';
+        }
+
+        forecastContainerEl.appendChild(weatherIconEl);
+
+        
         
         
         // temp
         var temp = data.daily[i].temp.day;
-        console.log(temp);
+        
         var tempEl = document.createElement("h5");
         tempEl.textContent = "Temp: " + temp + "°F";
         forecastContainerEl.appendChild(tempEl);
