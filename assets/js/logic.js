@@ -3,11 +3,19 @@ var cityInputEl = document.querySelector("#city");
 var currentWeatherElement = document.querySelector(".current");
 var fiveDayContainerEl = document.querySelector(".fiveDay");
 var searchHistoryContainerEl = document.querySelector(".searchHistory");
+var searchHistoryBtn = document.querySelector(".searchHistory");
+var arrStor = [];
 
-function findCoord(event) {
-    event.preventDefault();
+function findCoord(argument) {
+    if (typeOf (argument) !== 'string') {
+    argument.preventDefault();
+    }
 
+    if (typeOf (argument) === 'string') {
+        var city = argument;
+    } else {
     var city = cityInputEl.value.trim();
+    }
     // google geocoding api
     var coordApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + city + "&key=AIzaSyAfl9qXiBEqLsi1wvqPGoTN9N7f4YtBp38";
 
@@ -18,18 +26,20 @@ function findCoord(event) {
                 var lng = data.results[0].geometry.location.lng;
                 city = data.results[0].address_components[0].short_name;
                 fetchWeather(lat, lng, city);
+                arrStor.push(city);
+                localStorage.setItem("cities", JSON.stringify(arrStor));
+                newSearchHistory(city);
             });
         } else {
             alert('Error');
         }
     });
 
-    saveSearch(city);
     
 };
 
-function saveSearch(city) {
-    localStorage.setItem("cities", JSON.stringify(city));
+function newSearchHistory(city) {
+    
    
 
     // check for existing search history
@@ -46,7 +56,7 @@ function saveSearch(city) {
     // create search history button
     var searchHistoryButtonEl = document.createElement("button");
     searchHistoryButtonEl.className = "btn";
-    searchHistoryButtonEl.setAttribute("type", "submit");
+    // searchHistoryButtonEl.setAttribute("type", "submit");
     searchHistoryButtonEl.setAttribute("data-city", city);
     searchHistoryButtonEl.setAttribute("id", "historyBtn");
     searchHistoryButtonEl.innerText = city;
@@ -55,6 +65,24 @@ function saveSearch(city) {
 };
 
 function loadSearch() {
+
+
+    var retrievedSearches = localStorage.getItem("cities");
+
+    if (!retrievedSearches) {
+        localStorage.setItem("cities", JSON.stringify(arrStor));
+        return false;
+    }
+
+    retrievedSearches = JSON.parse(retrievedSearches);
+
+    console.log(retrievedSearches);
+
+    for (var i=0; i<retrievedSearches.length; i++) {
+        arrStor.push(retrievedSearches[i]);
+        newSearchHistory(retrievedSearches[i]);
+    }
+    
 
 };
 
@@ -246,5 +274,15 @@ function secondaryDisplay(data, city) {
 
 };
 
+function test(event) {
+    
+    console.log(event.target.dataset.city);
+    var oldCity = event.target.dataset.city;
 
+    findCoord(oldCity);
+};
+
+
+loadSearch();
 cityFormEl.addEventListener("submit", findCoord);
+searchHistoryBtn.addEventListener("click", test);
