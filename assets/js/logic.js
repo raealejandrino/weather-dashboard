@@ -58,8 +58,8 @@ function displayWeather(data, city) {
     // Moment
     
     var currentDate = moment().format("M/D/YY");
-    var nextDate = moment().add(1, "d").format("M/D/YY");
-    console.log(currentDate, nextDate);
+    
+    console.log(currentDate);
 
 
     // Display city input and current date
@@ -130,12 +130,37 @@ function secondaryDisplay(data, city) {
     fiveDayContainerEl.textContent = "";
 
     // Display header
+    var forecastHeaderContainerEl = document.createElement("div");
+    forecastHeaderContainerEl.className = "col-12";
 
     var fiveDayHeader = document.createElement("h3");
     fiveDayHeader.textContent = "5-Day Forecast:";
-    fiveDayContainerEl.appendChild(fiveDayHeader);
+    forecastHeaderContainerEl.appendChild(fiveDayHeader);
+    fiveDayContainerEl.appendChild(forecastHeaderContainerEl);
 
-}
+    // FOR LOOP 
+
+
+    var nextDate = moment().add(1, "d").format("M/D/YY");
+
+    for (var i=0; i < 5; i++) {
+        var forecastContainerEl = document.createElement("div");
+        forecastContainerEl.classList = "col-sm-8 col-md-4 col-xl-2";
+
+        var forecastHeaderEl = document.createElement("h4");
+        forecastHeaderEl.textContent = nextDate;
+
+        forecastContainerEl.appendChild(forecastHeaderEl);
+        fiveDayContainerEl.appendChild(forecastContainerEl);
+
+        nextDate = (moment(nextDate).add(1, "d").format("M/D/YY"));
+
+        
+
+
+    }
+
+};
 
 
 cityFormEl.addEventListener("submit", findCoord);
